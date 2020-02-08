@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ClickPostActivity"
+    android:background="@drawable/edit">
+
+    <TextView
+        android:id="@+id/click_post"
+        android:layout_width="match_parent"
+        android:layout_height="414dp"
+        android:layout_above="@+id/edit_post"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scrollbars="vertical"
+        android:textAlignment="textStart"
+        android:textColor="#990000"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/edit_post"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="80dp"
+        android:text="Edit Post"
+        android:background="@drawable/button"/>
+
+    <Button
+        android:id="@+id/delete_post"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="Delete Post"
+        android:background="@drawable/button"/>
+
+</RelativeLayout>

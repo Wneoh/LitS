@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login"
+    tools:context=".SetupActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/setup_profile_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/profile" />
+
+    <EditText
+        android:id="@+id/setup_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setup_profile_image"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="7dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/input"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textMultiLine"
+        android:padding="14dp"
+        android:drawableLeft="@drawable/username"/>
+
+    <EditText
+        android:id="@+id/setup_full_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setup_username"
+        android:layout_marginRight="7dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/input"
+        android:ems="10"
+        android:hint="Full Name"
+        android:inputType="textMultiLine"
+        android:padding="14dp"
+        android:drawableLeft="@drawable/name"/>
+
+    <Button
+        android:id="@+id/setup_country_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setup_full_name"
+        android:layout_marginRight="7dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/input"
+        android:ems="10"
+        android:hint="Country"
+        android:inputType="textMultiLine"
+        android:padding="14dp"
+        android:textSize="20dp"
+        android:textAlignment="textStart"
+        android:drawableLeft="@drawable/country"/>
+
+    <Button
+        android:id="@+id/setup_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setup_country_name"
+        android:layout_marginRight="7dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/input"
+        android:drawableLeft="@drawable/question"
+        android:ems="10"
+        android:hint="Gender"
+        android:textAlignment="textStart"
+        android:textSize="20dp"
+        android:inputType="textMultiLine"
+        android:padding="14dp" />
+
+    <Button
+        android:id="@+id/setup_information_button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setup_gender"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button"
+        android:text="Save"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+</RelativeLayout>
