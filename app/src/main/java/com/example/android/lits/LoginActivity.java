@@ -4,8 +4,8 @@ package com.example.android.lits;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * An LoginActivty.class that basically uses FirebaseDatabse to Authentic if the use is allow to login
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private Button LoginButton;
     private EditText UserEmail, UserPassword;
@@ -43,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         LoginButton = findViewById(R.id.login);
         mAuth =  FirebaseAuth.getInstance();
         loadingBar = new ProgressDialog(this);
+        findViewById(R.id.choose_theme).setOnClickListener(view ->
+                startActivity(new Intent(this, ThemeActivity.class)));
 
         NeedNewAccountLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,21 +86,23 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void AllowUserToLogin()
     {
-        String email = UserEmail.getText().toString();
+        String email = UserEmail.getText().toString().trim();
         String password = UserPassword.getText().toString();
 
         if(TextUtils.isEmpty(email))
         {
-            Toast.makeText(this, "Please write your email!", Toast.LENGTH_SHORT).show();
+            UserEmail.setError("Enter your email address");
+            UserEmail.requestFocus();
         }else if (TextUtils.isEmpty(password))
         {
-            Toast.makeText(this, "Please write your password!", Toast.LENGTH_SHORT).show();
+            UserPassword.setError("Enter your password");
+            UserPassword.requestFocus();
         }else
         {
             loadingBar.setTitle("Login");
-            loadingBar.setMessage("Please wait, while we are allowing you to login");
+            loadingBar.setMessage("Signing you in…");
             loadingBar.show();
-            loadingBar.setCanceledOnTouchOutside(true);
+            loadingBar.setCanceledOnTouchOutside(false);
             mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task)
@@ -110,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                         loadingBar.dismiss();
                     }else{
                         String message = task.getException().getMessage();
-                        Toast.makeText(LoginActivity.this," "+message,Toast.LENGTH_SHORT);
+                        Toast.makeText(LoginActivity.this," "+message,Toast.LENGTH_LONG).show();
                         loadingBar.dismiss();
                     }
                 }

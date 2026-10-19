@@ -4,5 +4,5 @@
     <size
         android:width="5dip" />
     <solid
-        android:color="@color/colorPrimaryDark" />
+        android:color="?attr/litsAccent" />
 </shape>

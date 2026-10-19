@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="?attr/litsBackground">
+    <androidx.appcompat.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/theme_toolbar" android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+        app:title="Appearance" app:titleTextColor="?attr/litsText" />
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Make yourself at home"
+                android:textColor="?attr/litsText" android:textSize="24sp" android:fontFamily="sans-serif-medium" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                android:text="Choose a look for your reading and writing." android:textColor="?attr/litsMuted" android:textSize="14sp" />
+            <LinearLayout android:id="@+id/theme_options" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:layout_marginTop="24dp" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                android:text="Your choice is saved on this device and applies throughout LitS." android:textColor="?attr/litsMuted"
+                android:textSize="13sp" android:lineSpacingExtra="4dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

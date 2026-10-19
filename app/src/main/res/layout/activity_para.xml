@@ -1,46 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/login"
-    tools:context=".ParaActivity">
-
-    <include
-        android:id="@+id/update_para_toolbar"
-        layout="@layout/app_bar_layout" />
-
-    <EditText
-        android:id="@+id/para"
-        android:layout_width="match_parent"
-        android:layout_height="700dp"
-        android:layout_alignParentStart="true"
-        android:layout_above="@id/post_para"
-        android:background="#ffffff"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="What is in your mind?\nShare it to shine it."
-        android:imeOptions="actionNext"
-        android:inputType="textMultiLine|textLongMessage"
-        android:lineSpacingExtra="4sp"
-        android:lines="25"
-        android:scrollbars="vertical"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="italic"
-        android:typeface="sans"
-        android:textCursorDrawable="@drawable/cursor_size"/>
-
-    <Button
-        android:id="@+id/post_para"
-        android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/button"
-        android:text="Upload" />
-
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="?attr/litsSurface" android:focusableInTouchMode="true">
+    <androidx.appcompat.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/update_para_toolbar" android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+        android:background="?attr/litsBackground" app:titleTextColor="?attr/litsText" app:subtitleTextColor="?attr/litsMuted">
+        <com.google.android.material.button.MaterialButton android:id="@+id/post_para"
+            style="@style/LitsButton" android:layout_width="wrap_content" android:layout_height="40dp"
+            android:layout_gravity="end" android:layout_marginEnd="12dp" android:text="Publish"
+            android:minWidth="84dp" android:textSize="14sp" app:cornerRadius="20dp" app:elevation="0dp" />
+    </androidx.appcompat.widget.Toolbar>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="?attr/litsBorder" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingStart="20dp"
+        android:paddingEnd="20dp" android:paddingTop="20dp" android:paddingBottom="8dp"
+        android:text="Share a thought, story, or moment." android:textSize="14sp" android:textColor="?attr/litsMuted" />
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <LinearLayout android:id="@+id/photo_preview_group" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="20dp" android:visibility="gone">
+        <ImageView android:id="@+id/editor_photo" android:layout_width="match_parent" android:layout_height="180dp"
+            android:scaleType="centerCrop" android:background="@drawable/card_background" android:clipToOutline="true" android:contentDescription="Selected photo" />
+        <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp">
+            <LinearLayout android:id="@+id/photo_thumbnails" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" />
+        </HorizontalScrollView>
+        <TextView android:id="@+id/remove_photo" android:layout_width="wrap_content" android:layout_height="48dp"
+            android:gravity="center_vertical" android:text="Remove photo" android:textColor="?attr/litsAccent" android:clickable="true" android:focusable="true" />
+    </LinearLayout>
+    <EditText android:id="@+id/para" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="200dp" android:background="@null" android:paddingStart="20dp"
+        android:paddingEnd="20dp" android:paddingTop="12dp" android:paddingBottom="20dp"
+        android:gravity="top|start" android:inputType="textMultiLine|textCapSentences"
+        android:hint="What’s on your mind?" android:textSize="18sp" android:lineSpacingExtra="5dp"
+        android:textColor="?attr/litsText" android:textColorHint="?attr/litsMuted" android:scrollbars="vertical"
+        android:importantForAutofill="no" />
+    </LinearLayout>
+    </ScrollView>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="?attr/litsBorder" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:paddingStart="20dp"
+        android:paddingEnd="20dp" android:gravity="center_vertical" android:background="?attr/litsBackground">
+        <TextView android:id="@+id/add_photo" android:layout_width="wrap_content" android:layout_height="48dp"
+            android:paddingEnd="20dp" android:gravity="center_vertical" android:text="＋ Photo" android:textColor="?attr/litsAccent" android:clickable="true" android:focusable="true" />
+        <TextView android:id="@+id/word_count" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" android:text="0 words" android:textSize="12sp" android:textColor="?attr/litsMuted" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Public when published" android:textSize="12sp" android:textColor="?attr/litsMuted" />
+    </LinearLayout>
+</LinearLayout>

@@ -2,14 +2,14 @@ package com.example.android.lits;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import com.google.android.material.navigation.NavigationView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -34,17 +34,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private RecyclerView postList;
-    private android.support.v7.widget.Toolbar mToolbar;
+    private androidx.appcompat.widget.Toolbar mToolbar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
     private CircleImageView NavProfileImage;
     private TextView NavProfileUserName;
-    private ImageButton NewPara;
+    private View NewPara;
+    private FirebaseRecyclerAdapter<Posts, PostsViewHolder> feedAdapter;
 
     public static final String POST_KEY = "postKey";
     private FirebaseAuth mAuth;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setTitle("LitS.");
 
         NewPara = findViewById(R.id.add_new_para);
 
@@ -105,13 +106,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        DisplayAllPosts();
 
     }
 
     private void DisplayAllPosts()
     {
-        FirebaseRecyclerAdapter<Posts, PostsViewHolder> firebaseRecyclerAdapter =
+        feedAdapter =
                 new FirebaseRecyclerAdapter<Posts, PostsViewHolder>
                         (
                                 Posts.class,
@@ -121,6 +121,19 @@ public class MainActivity extends AppCompatActivity {
                         )
                 {
                     @Override
+                    public void onDataChanged() {
+                        TextView status = findViewById(R.id.feed_status);
+                        status.setText("The journal is waiting.\nBe the first to share a thought.");
+                        status.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        TextView status = findViewById(R.id.feed_status);
+                        status.setText("We couldn’t load the journal.\nCheck your connection and reopen the feed.");
+                        status.setVisibility(View.VISIBLE);
+                    }
+                    @Override
                     protected void populateViewHolder(PostsViewHolder viewHolder, Posts model, int position)
                     {
                         final String PostKey = getRef(position).getKey();
@@ -129,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
                         viewHolder.setFullname(model.getFullname());
                         viewHolder.setTime(model.getTime());
                         viewHolder.setPost(model.getPost());
+                        PostPhotos.bindFeed(viewHolder.mView, model.photos());
+                        ReactionBar.bindFirebase(viewHolder.mView.findViewById(R.id.post_reactions), model, getRef(position));
 
                         viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -141,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 };
-        postList.setAdapter(firebaseRecyclerAdapter);
+        postList.setAdapter(feedAdapter);
     }
 
     public static class PostsViewHolder extends RecyclerView.ViewHolder
@@ -157,12 +172,15 @@ public class MainActivity extends AppCompatActivity {
         public void setFullname(String fullname){
             TextView username = (TextView) mView.findViewById(R.id.post_profile_name);
             username.setText(fullname);
+            TextView initial = mView.findViewById(R.id.post_initial);
+            String name = fullname == null ? "" : fullname.trim();
+            initial.setText(name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase(java.util.Locale.getDefault()));
         }
 
         public void setTime(String time)
         {
             TextView PostTime = (TextView) mView.findViewById(R.id.post_time);
-            PostTime.setText("    " + time);
+            PostTime.setText(time == null ? "" : time);
         }
 
 
@@ -170,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
         {
             TextView userPost = (TextView) mView.findViewById(R.id.user_post);
             userPost.setText(post);
+            userPost.setVisibility(post == null || post.trim().isEmpty() ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -185,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onStart() {
             FirebaseUser currentUser = mAuth.getCurrentUser();
             if(currentUser!=null){
+                DisplayAllPosts();
                 currentUserID = mAuth.getCurrentUser().getUid();
                 CheckUserExistence();
                 UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
@@ -199,7 +219,8 @@ public class MainActivity extends AppCompatActivity {
                                 String image = dataSnapshot.child("ProfileImage").getValue().toString();
                                 Picasso.with(MainActivity.this).load(image).placeholder(R.drawable.profile).into(NavProfileImage);
                             } else {
-                                Toast.makeText(MainActivity.this, "You don't have a profile pic.", Toast.LENGTH_SHORT).show();
+                                Picasso.with(MainActivity.this).cancelRequest(NavProfileImage);
+                                NavProfileImage.setImageResource(R.drawable.profile);
                             }
                         }
                     }
@@ -277,6 +298,10 @@ public class MainActivity extends AppCompatActivity {
                     mAuth.signOut();
                     SendUserToLoginActivity();
                     break;
+                case R.id.nav_theme:
+                    drawerLayout.closeDrawers();
+                    startActivity(new Intent(this, ThemeActivity.class));
+                    break;
             }
         }
 
@@ -284,6 +309,15 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
         startActivity(setupIntent);
+    }
+
+    @Override
+    protected void onStop() {
+        if (feedAdapter != null) {
+            feedAdapter.cleanup();
+            feedAdapter = null;
+        }
+        super.onStop();
     }
 
     private void SendUserToMainActivity()

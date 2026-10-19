@@ -1,0 +1,10 @@
+<resources>
+    <attr name="litsBackground" format="color" />
+    <attr name="litsSurface" format="color" />
+    <attr name="litsText" format="color" />
+    <attr name="litsMuted" format="color" />
+    <attr name="litsBorder" format="color" />
+    <attr name="litsAccent" format="color" />
+    <attr name="litsSoftAccent" format="color" />
+    <attr name="litsOnAccent" format="color" />
+</resources>

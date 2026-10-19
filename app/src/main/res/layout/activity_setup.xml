@@ -1,96 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/login"
-    tools:context=".SetupActivity">
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/setup_profile_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/profile" />
-
-    <EditText
-        android:id="@+id/setup_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/setup_profile_image"
-        android:layout_centerInParent="true"
-        android:layout_marginRight="7dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/input"
-        android:ems="10"
-        android:hint="Username"
-        android:inputType="textMultiLine"
-        android:padding="14dp"
-        android:drawableLeft="@drawable/username"/>
-
-    <EditText
-        android:id="@+id/setup_full_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/setup_username"
-        android:layout_marginRight="7dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/input"
-        android:ems="10"
-        android:hint="Full Name"
-        android:inputType="textMultiLine"
-        android:padding="14dp"
-        android:drawableLeft="@drawable/name"/>
-
-    <Button
-        android:id="@+id/setup_country_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/setup_full_name"
-        android:layout_marginRight="7dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/input"
-        android:ems="10"
-        android:hint="Country"
-        android:inputType="textMultiLine"
-        android:padding="14dp"
-        android:textSize="20dp"
-        android:textAlignment="textStart"
-        android:drawableLeft="@drawable/country"/>
-
-    <Button
-        android:id="@+id/setup_gender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/setup_country_name"
-        android:layout_marginRight="7dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/input"
-        android:drawableLeft="@drawable/question"
-        android:ems="10"
-        android:hint="Gender"
-        android:textAlignment="textStart"
-        android:textSize="20dp"
-        android:inputType="textMultiLine"
-        android:padding="14dp" />
-
-    <Button
-        android:id="@+id/setup_information_button"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/setup_gender"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button"
-        android:text="Save"
-        android:textColor="@android:color/white"
-        android:textSize="20sp" />
-
-</RelativeLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="?attr/litsBackground">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Make it yours"
+            android:textSize="28sp" android:fontFamily="sans-serif-medium" android:textColor="?attr/litsText" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:text="Introduce yourself to the community." android:textSize="15sp" android:textColor="?attr/litsMuted" />
+        <de.hdodenhof.circleimageview.CircleImageView android:id="@+id/setup_profile_image" android:layout_width="80dp"
+            android:layout_height="80dp" android:layout_gravity="center_horizontal" android:layout_marginTop="24dp"
+            android:src="@drawable/profile" android:contentDescription="Choose a profile photo" android:focusable="true" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center"
+            android:text="Tap to add a photo" android:textSize="12sp" android:textColor="?attr/litsMuted" android:layout_marginTop="8dp" />
+        <TextView style="@style/LitsLabel" android:layout_marginTop="24dp" android:text="Username" android:labelFor="@id/setup_username" />
+        <EditText android:id="@+id/setup_username" style="@style/LitsInput" android:layout_marginTop="8dp" android:hint="Your username" android:inputType="text" />
+        <TextView style="@style/LitsLabel" android:layout_marginTop="16dp" android:text="Full name" android:labelFor="@id/setup_full_name" />
+        <EditText android:id="@+id/setup_full_name" style="@style/LitsInput" android:layout_marginTop="8dp" android:hint="Your name" android:inputType="textPersonName" />
+        <TextView style="@style/LitsLabel" android:layout_marginTop="16dp" android:text="Country" android:labelFor="@id/setup_country_name" />
+        <androidx.appcompat.widget.AppCompatButton android:id="@+id/setup_country_name" style="@style/LitsInput" android:layout_marginTop="8dp"
+            android:text="Select country  ›" android:textAllCaps="false" android:gravity="center_vertical|start" />
+        <TextView style="@style/LitsLabel" android:layout_marginTop="16dp" android:text="Gender" android:labelFor="@id/setup_gender" />
+        <androidx.appcompat.widget.AppCompatButton android:id="@+id/setup_gender" style="@style/LitsInput" android:layout_marginTop="8dp"
+            android:text="Select gender  ›" android:textAllCaps="false" android:gravity="center_vertical|start" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/setup_information_button"
+            style="@style/LitsButton" android:layout_marginTop="24dp" android:text="Save profile" />
+    </LinearLayout>
+</ScrollView>

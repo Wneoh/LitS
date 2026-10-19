@@ -1,69 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/login"
-    tools:context=".RegisterActivity">
-
-    <ImageView
-        android:id="@+id/register_icon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        app:srcCompat="@drawable/logo" />
-
-    <EditText
-        android:id="@+id/register_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/register_icon"
-        android:background="@drawable/input"
-        android:drawableLeft="@drawable/email"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:padding="10dp" />
-
-    <EditText
-        android:id="@+id/register_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/register_email"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/input"
-        android:drawableLeft="@drawable/password"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:padding="10dp" />
-
-    <EditText
-        android:id="@+id/register_confirm_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/register_password"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/input"
-        android:drawableLeft="@drawable/password"
-        android:ems="10"
-        android:hint="Confirm Password"
-        android:inputType="textPassword"
-        android:padding="10dp" />
-
-    <Button
-        android:id="@+id/register_create_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/register_confirm_password"
-        android:layout_marginTop="26dp"
-        android:background="@drawable/button"
-        android:padding="15dp"
-        android:text="Create Account"
-        android:textColor="#ffffff"
-        android:textSize="20dp" />
-</RelativeLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="?attr/litsBackground">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="28dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LitS" android:fontFamily="sans-serif-medium" android:textStyle="bold" android:textSize="24sp" android:textColor="?attr/litsAccent" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp" android:text="Create your account" android:fontFamily="sans-serif-medium" android:textSize="28sp" android:textColor="?attr/litsText" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="Create an account and add your voice to the journal." android:textSize="16sp" android:textColor="?attr/litsMuted" android:lineSpacingExtra="4dp" />
+        <TextView style="@style/LitsLabel" android:layout_marginTop="24dp" android:text="Email address" android:labelFor="@id/register_email" />
+        <EditText android:id="@+id/register_email" style="@style/LitsInput" android:layout_marginTop="8dp" android:hint="you@example.com" android:inputType="textEmailAddress" />
+        <TextView style="@style/LitsLabel" android:layout_marginTop="24dp" android:text="Password" android:labelFor="@id/register_password" />
+        <EditText android:id="@+id/register_password" style="@style/LitsInput" android:layout_marginTop="8dp" android:hint="Choose a password" android:inputType="textPassword" />
+        <TextView style="@style/LitsLabel" android:layout_marginTop="24dp" android:text="Confirm password" android:labelFor="@id/register_confirm_password" />
+        <EditText android:id="@+id/register_confirm_password" style="@style/LitsInput" android:layout_marginTop="8dp" android:hint="Repeat your password" android:inputType="textPassword" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/register_create_account" style="@style/LitsButton" android:layout_marginTop="28dp" android:text="Create account" />
+    </LinearLayout>
+</ScrollView>

@@ -1,44 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ClickPostActivity"
-    android:background="@drawable/edit">
-
-    <TextView
-        android:id="@+id/click_post"
-        android:layout_width="match_parent"
-        android:layout_height="414dp"
-        android:layout_above="@+id/edit_post"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:scrollbars="vertical"
-        android:textAlignment="textStart"
-        android:textColor="#990000"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/edit_post"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="80dp"
-        android:text="Edit Post"
-        android:background="@drawable/button"/>
-
-    <Button
-        android:id="@+id/delete_post"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:text="Delete Post"
-        android:background="@drawable/button"/>
-
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="?attr/litsSurface">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="56dp" android:gravity="center_vertical">
+        <TextView android:id="@+id/read_back" android:layout_width="88dp" android:layout_height="match_parent"
+            android:text="‹  Back" android:gravity="center" android:textSize="16sp" android:textColor="?attr/litsAccent"
+            android:background="?attr/selectableItemBackground" android:focusable="true" android:clickable="true" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Journal entry" android:textSize="16sp" android:fontFamily="sans-serif-medium" android:textColor="?attr/litsText" />
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="20dp">
+                <TextView android:id="@+id/reader_initial" android:layout_width="44dp" android:layout_height="44dp"
+                    android:gravity="center" android:background="@drawable/avatar_background" android:textColor="?attr/litsAccent" android:textSize="18sp" android:importantForAccessibility="no" />
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginStart="12dp">
+                    <TextView android:id="@+id/reader_author" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:fontFamily="sans-serif-medium" android:textColor="?attr/litsText" />
+                    <TextView android:id="@+id/reader_date" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="3dp" android:textSize="12sp" android:textColor="?attr/litsMuted" />
+                </LinearLayout>
+            </LinearLayout>
+            <ImageView android:id="@+id/post_photo" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:adjustViewBounds="true" android:scaleType="fitCenter" android:visibility="gone" android:layout_marginBottom="20dp"
+                android:background="@drawable/card_background" android:clipToOutline="true" android:contentDescription="Post photo. Tap to view full screen" />
+            <LinearLayout android:id="@+id/extra_photos" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
+            <TextView android:id="@+id/click_post" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textSize="18sp" android:lineSpacingExtra="7dp" android:textColor="?attr/litsText" android:textIsSelectable="true" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginTop="24dp" android:background="?attr/litsBorder" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="Leave a reaction" android:textSize="12sp" android:textColor="?attr/litsMuted" />
+            <LinearLayout android:id="@+id/post_reactions" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+                android:layout_marginTop="20dp" android:padding="14dp" android:background="@drawable/comments_background">
+            <TextView android:id="@+id/comments_heading" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Comments" android:textSize="18sp" android:fontFamily="sans-serif-medium" android:textColor="?attr/litsText" android:accessibilityHeading="true" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp"
+                android:text="Join the conversation" android:textSize="12sp" android:textColor="?attr/litsMuted" />
+            <TextView android:id="@+id/comments_status" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:text="Loading comments…" android:textSize="13sp" android:textColor="?attr/litsMuted" />
+            <LinearLayout android:id="@+id/comments_list" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="?attr/litsBorder" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:gravity="center_vertical"
+        android:background="?attr/litsBackground">
+        <EditText android:id="@+id/comment_input" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:minHeight="48dp" android:maxLines="3" android:maxLength="1000" android:inputType="textMultiLine|textCapSentences"
+            android:hint="Write a comment…" android:textSize="14sp" android:padding="12dp" android:background="@drawable/field_background"
+            android:textColor="?attr/litsText" android:textColorHint="?attr/litsMuted" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/send_comment" style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content" android:layout_height="48dp" android:text="Send" android:textAllCaps="false" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
+        android:paddingStart="20dp" android:paddingEnd="20dp">
+        <com.google.android.material.button.MaterialButton android:id="@+id/edit_post" style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="48dp" android:text="Edit entry" android:textAllCaps="false" android:visibility="gone" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/delete_post" style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="48dp" android:text="Delete" android:textAllCaps="false" android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

@@ -6,8 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -36,7 +36,7 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class SetupActivity extends AppCompatActivity {
+public class SetupActivity extends BaseActivity {
 
     private EditText Username, Fullname;
     private Button saveInformationbutton;
@@ -50,6 +50,17 @@ public class SetupActivity extends AppCompatActivity {
     String[] Genders;
     String Fgender,Fcountry;
     private ProgressDialog loadingBar;
+    private final android.os.Handler saveHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private boolean savePending;
+    private final Runnable saveTimeout = () -> {
+        if (!isFinishing() && !isDestroyed() && savePending) {
+            loadingBar.dismiss();
+            new AlertDialog.Builder(this)
+                    .setTitle("Profile has not saved yet")
+                    .setMessage("The database is not responding. Check your connection. If this continues, the app's Firebase database may be unavailable. Your save is still pending; the dashboard will open when it is confirmed.")
+                    .setPositiveButton("OK", null).show();
+        }
+    };
     final static int Gallery_Pick =1;
 
     @Override
@@ -58,6 +69,10 @@ public class SetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setup);
 
         mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() == null) {
+            SendUserToLoginActivity();
+            return;
+        }
         currentUserID = mAuth.getCurrentUser().getUid();
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID); // get the user's unique id
         UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
@@ -73,6 +88,12 @@ public class SetupActivity extends AppCompatActivity {
 
         Countryname = findViewById(R.id.setup_country_name);
         Countries = getResources().getStringArray(R.array.countries);
+        if (savedInstanceState != null) {
+            Fcountry = savedInstanceState.getString("country");
+            Fgender = savedInstanceState.getString("gender");
+            if (Fcountry != null) Countryname.setText(Fcountry);
+            if (Fgender != null) Gender.setText(Fgender);
+        }
 
 
 
@@ -142,7 +163,8 @@ public class SetupActivity extends AppCompatActivity {
                         String image = dataSnapshot.child("ProfileImage").getValue().toString();
                         Picasso.with(SetupActivity.this).load(image).placeholder(R.drawable.profile).into(ProfileImage);
                     } else {
-                        Toast.makeText(SetupActivity.this, "You did not have any profile pic.", Toast.LENGTH_SHORT).show();
+                        Picasso.with(SetupActivity.this).cancelRequest(ProfileImage);
+                        ProfileImage.setImageResource(R.drawable.profile);
                     }
                 }
             }
@@ -161,10 +183,10 @@ public class SetupActivity extends AppCompatActivity {
         {
             Uri ImageUri = data.getData();
 
-            CropImage.activity()
+            CropImage.activity(ImageUri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1,1)
-                    .start(this);
+                    .start(this, ProfileCropActivity.class);
         }
 
         if(requestCode== CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
@@ -192,8 +214,7 @@ public class SetupActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Intent selfIntent = new Intent(SetupActivity.this, SetupActivity.class);
-                                        startActivity(selfIntent);
+                                        Picasso.with(SetupActivity.this).load(downloadUri).into(ProfileImage);
                                         Toast.makeText(SetupActivity.this, "Store sucessuly into database", Toast.LENGTH_SHORT).show();
                                         loadingBar.dismiss();
                                     } else {
@@ -203,6 +224,10 @@ public class SetupActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                        }
+                        else {
+                            loadingBar.dismiss();
+                            Toast.makeText(SetupActivity.this, "Photo upload failed. Please try again.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -227,36 +252,50 @@ public class SetupActivity extends AppCompatActivity {
      */
     private void SaveAccountInformation()
     {
-        String username =Username.getText().toString();
-        String fullname =Fullname.getText().toString();
+        if (savePending) {
+            Toast.makeText(this, "Your profile save is still waiting for the database.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String username =Username.getText().toString().trim();
+        String fullname =Fullname.getText().toString().trim();
 
         if(TextUtils.isEmpty(username)){
             Toast.makeText(this, "Please write your username.", Toast.LENGTH_SHORT).show();
+            return;
         }
         if(TextUtils.isEmpty(fullname)){
             Toast.makeText(this, "Please write your fullname.", Toast.LENGTH_SHORT).show();
+            return;
         }
         if(Fcountry==null){
             Toast.makeText(this, "Please select your country.", Toast.LENGTH_SHORT).show();
+            return;
         }
         if(Fgender==null){
             Toast.makeText(this, "Please select your gender.", Toast.LENGTH_SHORT).show();
-        }else if(Fcountry!=null&&Fcountry!=null){
+            return;
+        }else{
+            savePending = true;
+            saveHandler.postDelayed(saveTimeout, 15000);
             loadingBar.setTitle("Setting information");
             loadingBar.setMessage("Please wait, while we are storing your info...");
             loadingBar.show();
-            loadingBar.setCanceledOnTouchOutside(true);
+            loadingBar.setCancelable(false);
 
-            HashMap userMap = new HashMap();
+            HashMap<String, Object> userMap = new HashMap<>();
             userMap.put("username", username);
             userMap.put("fullname", fullname);
             userMap.put("country", Fcountry);
             userMap.put("status", " Hey there I am using Lits!");
             userMap.put("gender",Fgender);
-            UserRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+            UserRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
-                public void onComplete(@NonNull Task task)
+                public void onComplete(@NonNull Task<Void> task)
                 {
+                    savePending = false;
+                    saveHandler.removeCallbacks(saveTimeout);
+                    if (isFinishing() || isDestroyed()) return;
+                    loadingBar.dismiss();
                     if(task.isSuccessful())
                     {
                         SendUserToMainActivity();
@@ -264,12 +303,27 @@ public class SetupActivity extends AppCompatActivity {
                         loadingBar.dismiss();
                     }else{
                         String message = task.getException().getMessage();
-                        Toast.makeText(SetupActivity.this,""+message,Toast.LENGTH_LONG);
+                        new AlertDialog.Builder(SetupActivity.this).setTitle("Couldn't save profile")
+                                .setMessage(message).setPositiveButton("OK", null).show();
                         loadingBar.dismiss();
                     }
                 }
             });
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        state.putString("country", Fcountry);
+        state.putString("gender", Fgender);
+        super.onSaveInstanceState(state);
+    }
+
+    @Override
+    protected void onDestroy() {
+        saveHandler.removeCallbacks(saveTimeout);
+        if (loadingBar != null) loadingBar.dismiss();
+        super.onDestroy();
     }
 
 

@@ -1,52 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawable_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include
-            android:id= "@+id/main_page_toolbar"
-            layout="@layout/app_bar_layout">
-
-        </include>
-
-        <FrameLayout
-            android:id="@+id/main_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="56dp">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/all_users_post_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#B0B0B0" />
-        </FrameLayout>
-
-        <ImageButton
-            android:id="@+id/add_new_para"
-            android:layout_width="58dp"
-            android:layout_height="55dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/plus"/>
-    </RelativeLayout>
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:layout_margin="3dp"
-        app:menu="@menu/navigation_menu"></android.support.design.widget.NavigationView>
-
-</android.support.v4.widget.DrawerLayout>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/drawable_layout"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent" android:background="?attr/litsBackground">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+            <include android:id="@+id/main_page_toolbar" layout="@layout/app_bar_layout" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:paddingStart="20dp" android:paddingEnd="20dp" android:paddingTop="16dp" android:paddingBottom="20dp"
+                android:orientation="vertical">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Community" android:textSize="26sp" android:fontFamily="sans-serif-medium" android:textColor="?attr/litsText" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp"
+                    android:text="Stories and thoughts from everyone." android:textSize="14sp" android:textColor="?attr/litsMuted" />
+            </LinearLayout>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+                <androidx.recyclerview.widget.RecyclerView android:id="@+id/all_users_post_list"
+                    android:layout_width="match_parent" android:layout_height="match_parent" android:paddingStart="16dp"
+                    android:paddingEnd="16dp" android:paddingBottom="96dp" android:clipToPadding="false" />
+                <TextView android:id="@+id/feed_status" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_gravity="center" android:gravity="center"
+                    android:padding="32dp" android:text="Loading entries…" android:textSize="15sp"
+                    android:textColor="?attr/litsMuted" android:lineSpacingExtra="5dp" />
+            </FrameLayout>
+        </LinearLayout>
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/add_new_para" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end" android:layout_margin="20dp" android:text="Write"
+            android:textAllCaps="false" android:textColor="?attr/litsOnAccent" android:contentDescription="Write a new entry"
+            app:icon="@drawable/ic_write" app:iconTint="?attr/litsOnAccent" app:backgroundTint="?attr/litsAccent" />
+    </FrameLayout>
+    <com.google.android.material.navigation.NavigationView android:id="@+id/navigation_view"
+        android:layout_width="280dp" android:layout_height="match_parent" android:layout_gravity="start"
+        android:background="?attr/litsSurface" app:itemTextColor="?attr/litsText" app:itemIconTint="?attr/litsAccent"
+        app:menu="@menu/navigation_menu" />
+</androidx.drawerlayout.widget.DrawerLayout>
